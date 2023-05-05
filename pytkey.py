@@ -1,25 +1,26 @@
-import keyboard
-import time
+from pynput import keyboard
 
-trigger = 'fk'
-replacement = "Försäkringskassan"
-buffer = ''
+buffer = ''  # Initialize an empty string buffer to store keystrokes
 
+# This function will be called every time a key is pressed
 def on_key_press(key_event):
-    global buffer
-    buffer += key_event.name
-    
-    if buffer.endswith(trigger):
-        for _ in range(len(trigger)):
-            keyboard.press('backspace')  # Use 'keyboard.press' instead of 'keyboard.press_key'
-            keyboard.release('backspace')
-        keyboard.write(replacement)
-        buffer = ""
+    global buffer  # We use the global buffer variable
 
-        keyboard.write('Försäkringskassan', delay=0.01)  # Write 'Försäkringskassan'
+    # If the space key is pressed, check if the buffer contains "fk"
+    if key_event == keyboard.Key.space:
+        if buffer.lower() == 'fk':
+            # If the buffer contains "fk", remove it using backspace ('\b')
+            keyboard.Controller().type('\b' * 2)
+            # Then, type "Försäkringskassan" instead
+            keyboard.Controller().type('Försäkringskassan')
+        buffer = ''  # Clear the buffer after the space key is pressed
+    # If the backspace key is pressed, remove the last character from the buffer
+    elif key_event == keyboard.Key.backspace:
+        buffer = buffer[:-1]
+    # If a printable character key is pressed, add it to the buffer
+    elif isinstance(key_event, keyboard.KeyCode) and key_event.char.isprintable():
+        buffer += key_event.char.lower()
 
-keyboard.on_press(on_key_press)
-
-while True:
-    time.sleep(1)
-
+# Start the listener to detect key presses and call the on_key_press function
+with keyboard.Listener(on_press=on_key_press) as listener:
+    listener.join()
