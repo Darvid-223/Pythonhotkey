@@ -1,6 +1,6 @@
-# HotPythonscript
+# Pythonscript
 
-Hotpythonscript is a simple and efficient script, similar to AutoHotkey, written in Python for Linux Manjaro users. This project aims to provide an easy-to-use tool for automating repetitive tasks, creating custom hotkeys, and enhancing productivity on Linux Manjaro.
+Pythonscript is a simple and efficient script, similar to AutoHotkey, written in Python for Linux Manjaro users. This project aims to provide an easy-to-use tool for automating repetitive tasks, creating custom hotkeys, and enhancing productivity on Linux Manjaro.
 
 ## Features
 
