@@ -9,10 +9,13 @@ def on_key_press(key_event):
     # If the space key is pressed, check if the buffer contains "fk"
     if key_event == keyboard.Key.space:
         if buffer.lower() == 'fk':
-            # If the buffer contains "fk", remove it using backspace ('\b')
-            keyboard.Controller().type('\b' * 2)
+            controller = keyboard.Controller()
+            # Press the backspace key twice to remove "fk"
+            for _ in range(3):
+                controller.press(keyboard.Key.backspace)
+                controller.release(keyboard.Key.backspace)
             # Then, type "Försäkringskassan" instead
-            keyboard.Controller().type('Försäkringskassan')
+            controller.type('Försäkringskassan')
         buffer = ''  # Clear the buffer after the space key is pressed
     # If the backspace key is pressed, remove the last character from the buffer
     elif key_event == keyboard.Key.backspace:
