@@ -52,6 +52,10 @@ sudo systemctl status pytkey.service
 
 sudo systemctl stop pytkey.service
 
+6. Monitor service status:
+
+watch -n 1 "systemctl status pytkey.service"
+
 
 ## Contributing
 

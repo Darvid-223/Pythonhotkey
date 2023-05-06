@@ -37,3 +37,4 @@ def on_key_press(key_event):
 # Start the listener to detect key presses and call the on_key_press function
 with keyboard.Listener(on_press=on_key_press) as listener:
     listener.join()
+Försäkringskassan kla hla hla hla hla
