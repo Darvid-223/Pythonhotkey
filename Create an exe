@@ -1,0 +1,45 @@
+1. Install `pyinstaller` (if you haven't already) to create an executable from your Python script:
+
+pip install pyinstaller
+
+2. Create an executable from your Python script (replace `your_script.py` with the name of your script):
+
+pyinstaller --onefile your_script.py
+
+This command will create a standalone executable in the `dist` folder.
+
+3. Move the executable to a suitable location, e.g., `/home/darvid/python/`:
+
+sudo mv dist/your_script /home/darvid/python/
+
+4. Create a systemd service file for your script. Create a new file called `your_script.service` in `/etc/systemd/system/`:
+
+sudo nano /etc/systemd/system/your_script.service
+
+5. Add the following content to the file (replace `your_script` with the name of your executable):
+
+[Unit]
+Description=Your script description
+
+[Service]
+ExecStart=/home/darvid/python/your_script
+Restart=always
+User=darvid
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=multi-user.target
+
+6. Save the file and exit the text editor.
+7. Enable and start the service:
+
+sudo systemctl enable your_script.service
+sudo systemctl start your_script.service
+
+Your script will now run in the background, and it will automatically start whenever your computer starts. You can check the status of your script with:
+
+sudo systemctl status your_script.service
+
+If you want to stop the script, use:
+
+sudo systemctl stop your_script.service
