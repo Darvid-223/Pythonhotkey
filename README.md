@@ -35,13 +35,23 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Edit `config.py` to add your custom hotkeys and automation tasks. Follow the provided examples as a template.
+1. Edit `pytkey.py` to add your custom hotkeys and automation tasks. Follow the provided examples as a template.
 
 2. Start the script:
 
-python main.py
+sudo systemctl enable pytkey.service
+sudo systemctl start pytkey.service
 
 3. The script will now run in the background, and your custom hotkeys and automation tasks will be active.
+
+4. Check status of script:
+
+sudo systemctl status pytkey.service
+
+5. Stop the script:
+
+sudo systemctl stop pytkey.service
+
 
 ## Contributing
 
