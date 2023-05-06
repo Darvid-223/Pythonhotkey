@@ -16,46 +16,59 @@ version = 1.2
 buffer = ""  
 # Calls function när tangent trycks
 def on_key_press(key_event):
-    global buffer  
+    global buffer
     try:
-        # Checkar om buffer innehåller "fka" när mellanslag trycks 
         if key_event == keyboard.Key.space:
-#Hotrings
-            if buffer.lower() == "fka":
+
+            if buffer.lower().startswith("fka "):
                 controller = keyboard.Controller()
-                # Ta bort buffertangenter och mellanrum
-                for _ in range(len(buffer) + 1):
+
+                for _ in range(len("fka ")):
                     controller.press(keyboard.Key.backspace)
                     controller.release(keyboard.Key.backspace)
 
                 controller.type("Försäkringskassan ")
-                buffer = ""  
+                buffer = ""
 
-            if buffer.lower() == "hla":
+            elif buffer.lower().startswith("hla "):
                 controller = keyboard.Controller()
 
-                for _ in range(len(buffer) + 1):
+                for _ in range(len("hla ")):
                     controller.press(keyboard.Key.backspace)
                     controller.release(keyboard.Key.backspace)
 
                 controller.type("Handläggningsassistent ")
                 buffer = ""
-            
 
+            elif re.match(r'\d+ /m \d+ ', buffer.lower()):
+                controller = keyboard.Controller()
 
+                for _ in range(len(buffer)):
+                    controller.press(keyboard.Key.backspace)
+                    controller.release(keyboard.Key.backspace)
+
+                num1, num2 = [int(x) for x in re.findall(r'\d+', buffer)]
+                product = num1 * num2
+                controller.type(str(product))
+                buffer = ""
 
             else:
-                    buffer = ""
+                buffer = ""
 
-        # If the backspace key is pressed, remove the last character from the buffer
         elif key_event == keyboard.Key.backspace:
             buffer = buffer[:-1]
-        # If a printable character key is pressed, add it to the buffer
         elif isinstance(key_event, keyboard.KeyCode) and key_event.char.isprintable():
             buffer += key_event.char.lower()
+            if key_event.char == " ":
+                buffer += " "
+                
+        print(f"Current buffer: {buffer}")  # Debugging
+
     except Exception as e:
         print(f"Error occurred: {e}")
-        buffer = ""  # Reset the buffer to prevent any further issues
+        buffer = ""
+
+
 # Start the listener to detect key presses and call the on_key_press function
 with keyboard.Listener(on_press=on_key_press) as listener:
     listener.join()
