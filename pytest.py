@@ -18,58 +18,46 @@ buffer = ""
 def on_key_press(key_event):
     global buffer
     try:
+        # If the space key is pressed
         if key_event == keyboard.Key.space:
-
-            if buffer.lower().startswith("fka "):
+            # Check if the buffer contains "fka"
+            if buffer.lower() == "fka":
                 controller = keyboard.Controller()
 
-                for _ in range(len("fka ")):
+                # Remove the typed abbreviation and the space
+                for _ in range(len(buffer) + 1):
                     controller.press(keyboard.Key.backspace)
                     controller.release(keyboard.Key.backspace)
 
                 controller.type("Försäkringskassan ")
                 buffer = ""
 
-            elif buffer.lower().startswith("hla "):
+            # Check if the buffer contains "hla"
+            elif buffer.lower() == "hla":
                 controller = keyboard.Controller()
 
-                for _ in range(len("hla ")):
+                for _ in range(len(buffer) + 1):
                     controller.press(keyboard.Key.backspace)
                     controller.release(keyboard.Key.backspace)
 
                 controller.type("Handläggningsassistent ")
                 buffer = ""
 
-            elif re.match(r'\d+ /m \d+ ', buffer.lower()):
-                controller = keyboard.Controller()
-
-                for _ in range(len(buffer)):
-                    controller.press(keyboard.Key.backspace)
-                    controller.release(keyboard.Key.backspace)
-
-                num1, num2 = [int(x) for x in re.findall(r'\d+', buffer)]
-                product = num1 * num2
-                controller.type(str(product))
-                buffer = ""
-
+            # If the buffer doesn't contain "hla" or "fka", clear the buffer
             else:
                 buffer = ""
 
+        # If the backspace key is pressed, remove the last character from the buffer
         elif key_event == keyboard.Key.backspace:
             buffer = buffer[:-1]
+        # If a printable character key is pressed, add it to the buffer
         elif isinstance(key_event, keyboard.KeyCode) and key_event.char.isprintable():
             buffer += key_event.char.lower()
-            if key_event.char == " ":
-                buffer += " "
-                
-        print(f"Current buffer: {buffer}")  # Debugging
 
     except Exception as e:
         print(f"Error occurred: {e}")
-        buffer = ""
-
+        buffer = ""  # Reset the buffer to prevent any further issues
 
 # Start the listener to detect key presses and call the on_key_press function
 with keyboard.Listener(on_press=on_key_press) as listener:
     listener.join()
-
