@@ -1,6 +1,5 @@
 import keyboard as kb
 from pynput import keyboard
-from pynput.keyboard import Controller
 import time
 import re
 
@@ -12,27 +11,21 @@ import re
 #    print("Another instance is already running, quitting.")
 #    sys.exit(0)
 # ps aux | grep python | grep -v grep
-controller = Controller()
 buffer = ""
 
 def handle_hotstrings(buffer):
     if buffer.lower() == "fka":
-        for _ in range(len(buffer) + 1):
-            controller.press(keyboard.Key.backspace)
-            controller.release(keyboard.Key.backspace)
-        controller.type("Försäkringskassan ")
+        kb.write('\b' * (len(buffer) + 1))
+        kb.write("Försäkringskassan ")
         return True
 
     elif buffer.lower() == "hla":
-        for _ in range(len(buffer) + 1):
-            controller.press(keyboard.Key.backspace)
-            controller.release(keyboard.Key.backspace)
-        controller.type("Handläggningsassistent ")
+        kb.write('\b' * (len(buffer) + 1))
+        kb.write("Handläggningsassistent ")
         return True
 
     else:
         return False
-
 
 def handle_multiplication(buffer):
     if buffer.endswith("/m"):
@@ -44,7 +37,7 @@ def handle_multiplication(buffer):
             result = numbers[0] * numbers[1]
 
             kb.write('\b' * len(buffer))
-            kb.write(str(result))
+            kb.write(str(restult))
             return True
 
     return False
